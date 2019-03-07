@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="[25,)"
+issueTrackerURL="http://my.issue.tracker/"
+[[mods]]
+modId="curioofundying"
+version="${file.jarVersion}"
+displayName="Curio of Undying"
+displayURL="https://minecraft.curseforge.com/projects/curio-of-undying"
+logoFile="undying_icon.png"
+authors="C4"
+description='''
+Adds curio support for the Totem of Undying so you don't have to be holding it.
+'''
+[[dependencies.curioofundying]]
+    modId="forge"
+    mandatory=true
+    versionRange="[25,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.curioofundying]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.13.2, 1.14)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.curioofundying]]
+    modId="curios"
+    mandatory=true
+    versionRange="[0.6,)"
+    ordering="NONE"
+    side="BOTH"
