@@ -18,14 +18,18 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import top.theillusivec4.curios.api.CuriosAPI;
-import top.theillusivec4.curios.api.CuriosRegistry;
 import top.theillusivec4.curios.api.capability.CuriosCapability;
 import top.theillusivec4.curios.api.capability.ICurio;
+import top.theillusivec4.curios.api.imc.CurioIMCMessage;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -36,12 +40,22 @@ public class CurioOfUndying {
     public static final String MODID = "curioofundying";
 
     public CurioOfUndying() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        eventBus.addListener(this::setup);
+        eventBus.addListener(this::enqueue);
+        eventBus.addListener(this::clientSetup);
     }
 
     private void setup(final FMLCommonSetupEvent evt) {
-        CuriosRegistry.getOrRegisterType("charm").icon(new ResourceLocation(MODID, "item/empty_charm_slot"));
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    private void clientSetup(final FMLClientSetupEvent evt) {
+        CuriosAPI.registerIcon("charm", new ResourceLocation(MODID, "item/empty_charm_slot"));
+    }
+
+    private void enqueue(final InterModEnqueueEvent evt) {
+        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("charm"));
     }
 
     @SubscribeEvent
@@ -100,7 +114,7 @@ public class CurioOfUndying {
                 }
 
                 livingBase.setHealth(1.0F);
-                livingBase.func_195061_cb();
+                livingBase.clearActivePotions();
                 livingBase.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 900, 1));
                 livingBase.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 100, 1));
                 livingBase.world.setEntityState(livingBase, (byte)35);
