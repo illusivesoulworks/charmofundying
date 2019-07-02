@@ -1,16 +1,15 @@
 package top.theillusivec4.curioofundying;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
+import net.minecraft.item.Items;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -22,7 +21,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -43,15 +41,10 @@ public class CurioOfUndying {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::setup);
         eventBus.addListener(this::enqueue);
-        eventBus.addListener(this::clientSetup);
     }
 
     private void setup(final FMLCommonSetupEvent evt) {
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    private void clientSetup(final FMLClientSetupEvent evt) {
-        CuriosAPI.registerIcon("charm", new ResourceLocation(MODID, "item/empty_charm_slot"));
     }
 
     private void enqueue(final InterModEnqueueEvent evt) {
@@ -74,7 +67,7 @@ public class CurioOfUndying {
 
                 @Nonnull
                 @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable EnumFacing side) {
+                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
                     return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
                 }
             });
@@ -89,7 +82,8 @@ public class CurioOfUndying {
         }
     }
 
-    private boolean checkTotemDeathProtection(EntityLivingBase livingBase, DamageSource source) {
+    private boolean checkTotemDeathProtection(LivingEntity livingBase, DamageSource source) {
+
         if (source.canHarmInCreative()) {
             return false;
         } else {
@@ -100,28 +94,23 @@ public class CurioOfUndying {
                     return false;
                 }
             }
-            CuriosAPI.FinderData totem = CuriosAPI.getCurioEquipped(Items.TOTEM_OF_UNDYING, livingBase);
-
-            if (totem != null) {
-                ItemStack stack = totem.getStack();
+            return CuriosAPI.getCurioEquipped(Items.TOTEM_OF_UNDYING, livingBase).map(totem -> {
+                ItemStack stack = totem.getRight();
                 ItemStack copy = stack.copy();
                 stack.shrink(1);
 
-                if (livingBase instanceof EntityPlayerMP) {
-                    EntityPlayerMP entityplayermp = (EntityPlayerMP)livingBase;
-                    entityplayermp.addStat(StatList.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
+                if (livingBase instanceof ServerPlayerEntity) {
+                    ServerPlayerEntity entityplayermp = (ServerPlayerEntity) livingBase;
+                    entityplayermp.addStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
                     CriteriaTriggers.USED_TOTEM.trigger(entityplayermp, copy);
                 }
-
                 livingBase.setHealth(1.0F);
                 livingBase.clearActivePotions();
-                livingBase.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 900, 1));
-                livingBase.addPotionEffect(new PotionEffect(MobEffects.ABSORPTION, 100, 1));
+                livingBase.addPotionEffect(new EffectInstance(Effects.REGENERATION, 900, 1));
+                livingBase.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 100, 1));
                 livingBase.world.setEntityState(livingBase, (byte)35);
                 return true;
-            } else {
-                return false;
-            }
+            }).orElse(false);
         }
     }
 }
