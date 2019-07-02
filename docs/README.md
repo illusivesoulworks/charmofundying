@@ -1,4 +1,4 @@
-# Curio of Undying [![](http://cf.way2muchnoise.eu/versions/curio-of-undying.svg)](https://minecraft.curseforge.com/projects/curio-of-undying) [![](http://cf.way2muchnoise.eu/short_curio-of-undying_downloads.svg)](https://minecraft.curseforge.com/projects/curio-of-undying/files) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+# Curio of Undying [![](http://cf.way2muchnoise.eu/versions/curio-of-undying.svg)](https://minecraft.curseforge.com/projects/curio-of-undying) [![](http://cf.way2muchnoise.eu/short_curio-of-undying_downloads.svg)](https://minecraft.curseforge.com/projects/curio-of-undying/files) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg?&style=flat-square)](https://www.gnu.org/licenses/lgpl-3.0) [![](https://img.shields.io/discord/500852157503766538.svg?color=green&label=Discord&style=flat-square)](https://discord.gg/JWgrdwt)
 
 ## Overview
 
