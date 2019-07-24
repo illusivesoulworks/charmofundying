@@ -35,82 +35,101 @@ import javax.annotation.Nullable;
 @Mod(CurioOfUndying.MODID)
 public class CurioOfUndying {
 
-    public static final String MODID = "curioofundying";
+  public static final String MODID = "curioofundying";
 
-    public CurioOfUndying() {
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        eventBus.addListener(this::setup);
-        eventBus.addListener(this::enqueue);
+  public CurioOfUndying() {
+
+    final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    eventBus.addListener(this::setup);
+    eventBus.addListener(this::enqueue);
+  }
+
+  private void setup(final FMLCommonSetupEvent evt) {
+
+    MinecraftForge.EVENT_BUS.register(this);
+  }
+
+  private void enqueue(final InterModEnqueueEvent evt) {
+
+    InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE,
+                         () -> new CurioIMCMessage("charm"));
+  }
+
+  @SubscribeEvent
+  public void attachCapabilities(AttachCapabilitiesEvent<ItemStack> evt) {
+
+    if (evt.getObject().getItem() != Items.TOTEM_OF_UNDYING) {
+      return;
     }
 
-    private void setup(final FMLCommonSetupEvent evt) {
-        MinecraftForge.EVENT_BUS.register(this);
+    ICurio curio = new ICurio() {
+
+      @Override
+      public boolean canRightClickEquip() {
+
+        return true;
+      }
+    };
+    ICapabilityProvider provider = new ICapabilityProvider() {
+      private final LazyOptional<ICurio> curioOpt =
+              LazyOptional.of(() -> curio);
+
+      @Nonnull
+      @Override
+      public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap,
+                                               @Nullable Direction side) {
+
+        return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
+      }
+    };
+    evt.addCapability(CuriosCapability.ID_ITEM, provider);
+  }
+
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public void onLivingDeath(LivingDeathEvent evt) {
+
+    if (hasTotemProtection(evt.getEntityLiving(), evt.getSource())) {
+      evt.setCanceled(true);
+    }
+  }
+
+  private boolean hasTotemProtection(LivingEntity livingEntity,
+                                     DamageSource source) {
+
+    if (source.canHarmInCreative()) {
+      return false;
     }
 
-    private void enqueue(final InterModEnqueueEvent evt) {
-        InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("charm"));
+    for (ItemStack held : livingEntity.getHeldEquipment()) {
+
+      if (held.getItem() == Items.TOTEM_OF_UNDYING) {
+        return false;
+      }
     }
+    return CuriosAPI.getCurioEquipped(Items.TOTEM_OF_UNDYING, livingEntity)
+                    .map(totem -> {
+                      activeTotem(livingEntity, totem.getRight());
+                      return true;
+                    })
+                    .orElse(false);
+  }
 
-    @SubscribeEvent
-    public void attachCapabilities(AttachCapabilitiesEvent<ItemStack> evt) {
+  private void activeTotem(LivingEntity livingEntity, ItemStack totem) {
 
-        if (evt.getObject().getItem() == Items.TOTEM_OF_UNDYING) {
-            ICurio curio = new ICurio() {
+    ItemStack copy = totem.copy();
+    totem.shrink(1);
 
-                @Override
-                public boolean canRightClickEquip() {
-                    return true;
-                }
-            };
-            evt.addCapability(CuriosCapability.ID_ITEM, new ICapabilityProvider() {
-                private final LazyOptional<ICurio> curioOpt = LazyOptional.of(() -> curio);
-
-                @Nonnull
-                @Override
-                public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-                    return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
-                }
-            });
-        }
+    if (livingEntity instanceof ServerPlayerEntity) {
+      ServerPlayerEntity serverPlayer = (ServerPlayerEntity) livingEntity;
+      serverPlayer.addStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
+      CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, copy);
     }
-
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onLivingDeath(LivingDeathEvent evt) {
-
-        if (checkTotemDeathProtection(evt.getEntityLiving(), evt.getSource())) {
-            evt.setCanceled(true);
-        }
-    }
-
-    private boolean checkTotemDeathProtection(LivingEntity livingBase, DamageSource source) {
-
-        if (source.canHarmInCreative()) {
-            return false;
-        } else {
-
-            for (ItemStack held : livingBase.getHeldEquipment()) {
-
-                if (held.getItem() == Items.TOTEM_OF_UNDYING) {
-                    return false;
-                }
-            }
-            return CuriosAPI.getCurioEquipped(Items.TOTEM_OF_UNDYING, livingBase).map(totem -> {
-                ItemStack stack = totem.getRight();
-                ItemStack copy = stack.copy();
-                stack.shrink(1);
-
-                if (livingBase instanceof ServerPlayerEntity) {
-                    ServerPlayerEntity entityplayermp = (ServerPlayerEntity) livingBase;
-                    entityplayermp.addStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
-                    CriteriaTriggers.USED_TOTEM.trigger(entityplayermp, copy);
-                }
-                livingBase.setHealth(1.0F);
-                livingBase.clearActivePotions();
-                livingBase.addPotionEffect(new EffectInstance(Effects.REGENERATION, 900, 1));
-                livingBase.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 100, 1));
-                livingBase.world.setEntityState(livingBase, (byte)35);
-                return true;
-            }).orElse(false);
-        }
-    }
+    livingEntity.setHealth(1.0F);
+    livingEntity.clearActivePotions();
+    livingEntity.addPotionEffect(
+            new EffectInstance(Effects.REGENERATION, 900, 1));
+    livingEntity.addPotionEffect(
+            new EffectInstance(Effects.ABSORPTION, 100, 1));
+    livingEntity.world.setEntityState(livingEntity, (byte) 35);
+  }
 }
