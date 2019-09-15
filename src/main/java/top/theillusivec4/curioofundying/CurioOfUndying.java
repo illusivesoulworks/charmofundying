@@ -1,5 +1,7 @@
 package top.theillusivec4.curioofundying;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -29,9 +31,6 @@ import top.theillusivec4.curios.api.capability.CuriosCapability;
 import top.theillusivec4.curios.api.capability.ICurio;
 import top.theillusivec4.curios.api.imc.CurioIMCMessage;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 @Mod(CurioOfUndying.MODID)
 public class CurioOfUndying {
 
@@ -51,8 +50,7 @@ public class CurioOfUndying {
 
   private void enqueue(final InterModEnqueueEvent evt) {
 
-    InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE,
-                         () -> new CurioIMCMessage("charm"));
+    InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("charm"));
   }
 
   @SubscribeEvent
@@ -71,17 +69,17 @@ public class CurioOfUndying {
       }
     };
     ICapabilityProvider provider = new ICapabilityProvider() {
-      private final LazyOptional<ICurio> curioOpt =
-              LazyOptional.of(() -> curio);
+      private final LazyOptional<ICurio> curioOpt = LazyOptional.of(() -> curio);
 
       @Nonnull
       @Override
       public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap,
-                                               @Nullable Direction side) {
+          @Nullable Direction side) {
 
         return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
       }
     };
+
     evt.addCapability(CuriosCapability.ID_ITEM, provider);
   }
 
@@ -93,8 +91,7 @@ public class CurioOfUndying {
     }
   }
 
-  private boolean hasTotemProtection(LivingEntity livingEntity,
-                                     DamageSource source) {
+  private boolean hasTotemProtection(LivingEntity livingEntity, DamageSource source) {
 
     if (source.canHarmInCreative()) {
       return false;
@@ -106,15 +103,14 @@ public class CurioOfUndying {
         return false;
       }
     }
-    return CuriosAPI.getCurioEquipped(Items.TOTEM_OF_UNDYING, livingEntity)
-                    .map(totem -> {
-                      activeTotem(livingEntity, totem.getRight());
-                      return true;
-                    })
-                    .orElse(false);
+
+    return CuriosAPI.getCurioEquipped(Items.TOTEM_OF_UNDYING, livingEntity).map(totem -> {
+      activateTotem(livingEntity, totem.getRight());
+      return true;
+    }).orElse(false);
   }
 
-  private void activeTotem(LivingEntity livingEntity, ItemStack totem) {
+  private void activateTotem(LivingEntity livingEntity, ItemStack totem) {
 
     ItemStack copy = totem.copy();
     totem.shrink(1);
@@ -124,12 +120,13 @@ public class CurioOfUndying {
       serverPlayer.addStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
       CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, copy);
     }
+
     livingEntity.setHealth(1.0F);
     livingEntity.clearActivePotions();
     livingEntity.addPotionEffect(
-            new EffectInstance(Effects.REGENERATION, 900, 1));
+        new EffectInstance(Effects.REGENERATION, 900, 1));
     livingEntity.addPotionEffect(
-            new EffectInstance(Effects.ABSORPTION, 100, 1));
+        new EffectInstance(Effects.ABSORPTION, 100, 1));
     livingEntity.world.setEntityState(livingEntity, (byte) 35);
   }
 }
