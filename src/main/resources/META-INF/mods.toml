@@ -14,7 +14,7 @@ ${mod_description}
 [[dependencies.curioofundying]]
     modId="forge"
     mandatory=true
-    versionRange="[28,)"
+    versionRange="[28.1.0,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.curioofundying]]
@@ -26,6 +26,6 @@ ${mod_description}
 [[dependencies.curioofundying]]
     modId="curios"
     mandatory=true
-    versionRange="[FORGE-1.14.4-0.18,)"
+    versionRange="[FORGE-1.14.4-1.0,)"
     ordering="NONE"
     side="BOTH"
