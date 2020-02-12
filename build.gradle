@@ -59,7 +59,8 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${version_forge}"
-    compile fg.deobf("top.theillusivec4.curios:curios:${version_curios}")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios:${version_curios}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios:${version_curios}:api")
 }
 
 sourceSets {

@@ -1,8 +1,11 @@
 package top.theillusivec4.curioofundying;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -37,19 +40,16 @@ public class CurioOfUndying {
   public static final String MODID = "curioofundying";
 
   public CurioOfUndying() {
-
     final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::enqueue);
   }
 
   private void setup(final FMLCommonSetupEvent evt) {
-
     MinecraftForge.EVENT_BUS.register(this);
   }
 
   private void enqueue(final InterModEnqueueEvent evt) {
-
     InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("charm"));
   }
 
@@ -59,13 +59,27 @@ public class CurioOfUndying {
     if (evt.getObject().getItem() != Items.TOTEM_OF_UNDYING) {
       return;
     }
-
     ICurio curio = new ICurio() {
 
       @Override
       public boolean canRightClickEquip() {
-
         return true;
+      }
+
+      @Override
+      public boolean hasRender(String identifier, LivingEntity livingEntity) {
+        return true;
+      }
+
+      @Override
+      public void doRender(String identifier, LivingEntity livingEntity, float limbSwing,
+          float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw,
+          float headPitch, float scale) {
+        ICurio.RenderHelper.rotateIfSneaking(livingEntity);
+        GlStateManager.scalef(0.35F, 0.35F, 0.35F);
+        GlStateManager.translatef(0.0F, 0.5F, -0.45F);
+        GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
+        Minecraft.getInstance().getItemRenderer().renderItem(evt.getObject(), TransformType.NONE);
       }
     };
     ICapabilityProvider provider = new ICapabilityProvider() {
@@ -79,7 +93,6 @@ public class CurioOfUndying {
         return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
       }
     };
-
     evt.addCapability(CuriosCapability.ID_ITEM, provider);
   }
 
@@ -103,7 +116,6 @@ public class CurioOfUndying {
         return false;
       }
     }
-
     return CuriosAPI.getCurioEquipped(Items.TOTEM_OF_UNDYING, livingEntity).map(totem -> {
       activateTotem(livingEntity, totem.getRight());
       return true;
@@ -111,7 +123,6 @@ public class CurioOfUndying {
   }
 
   private void activateTotem(LivingEntity livingEntity, ItemStack totem) {
-
     ItemStack copy = totem.copy();
     totem.shrink(1);
 
@@ -120,7 +131,6 @@ public class CurioOfUndying {
       serverPlayer.addStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
       CriteriaTriggers.USED_TOTEM.trigger(serverPlayer, copy);
     }
-
     livingEntity.setHealth(1.0F);
     livingEntity.clearActivePotions();
     livingEntity.addPotionEffect(
