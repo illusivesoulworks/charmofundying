@@ -6,7 +6,7 @@ This project uses MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH.
 
 ## [2.0.1] - 2020.02.11
 ### Added
-- Added rendering
+- Added rendering [#1](https://github.com/TheIllusiveC4/CurioOfUndying/issues/1)
 
 ## [2.0] - 2019.09.15
 ### Changed
