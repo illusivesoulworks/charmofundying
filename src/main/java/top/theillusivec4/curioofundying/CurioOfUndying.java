@@ -89,7 +89,6 @@ public class CurioOfUndying {
       @Override
       public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap,
           @Nullable Direction side) {
-
         return CuriosCapability.ITEM.orEmpty(cap, curioOpt);
       }
     };
