@@ -1,11 +1,13 @@
 package top.theillusivec4.curioofundying;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -72,14 +74,18 @@ public class CurioOfUndying {
       }
 
       @Override
-      public void doRender(String identifier, LivingEntity livingEntity, float limbSwing,
+      public void render(String identifier, MatrixStack matrixStack,
+          IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing,
           float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw,
-          float headPitch, float scale) {
-        ICurio.RenderHelper.rotateIfSneaking(livingEntity);
-        GlStateManager.scalef(0.35F, 0.35F, 0.35F);
-        GlStateManager.translatef(0.0F, 0.5F, -0.45F);
-        GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
-        Minecraft.getInstance().getItemRenderer().renderItem(evt.getObject(), TransformType.NONE);
+          float headPitch) {
+        ICurio.RenderHelper.translateIfSneaking(matrixStack, livingEntity);
+        ICurio.RenderHelper.rotateIfSneaking(matrixStack, livingEntity);
+        matrixStack.scale(0.35F, 0.35F, 0.35F);
+        matrixStack.translate(0.0F, 0.5F, -0.4F);
+        matrixStack.rotate(Direction.DOWN.getRotation());
+        Minecraft.getInstance().getItemRenderer()
+            .renderItem(evt.getObject(), TransformType.NONE, light, OverlayTexture.DEFAULT_LIGHT,
+                matrixStack, renderTypeBuffer);
       }
     };
     ICapabilityProvider provider = new ICapabilityProvider() {
@@ -132,10 +138,8 @@ public class CurioOfUndying {
     }
     livingEntity.setHealth(1.0F);
     livingEntity.clearActivePotions();
-    livingEntity.addPotionEffect(
-        new EffectInstance(Effects.REGENERATION, 900, 1));
-    livingEntity.addPotionEffect(
-        new EffectInstance(Effects.ABSORPTION, 100, 1));
+    livingEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 900, 1));
+    livingEntity.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 100, 1));
     livingEntity.world.setEntityState(livingEntity, (byte) 35);
   }
 }
