@@ -50,10 +50,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import top.theillusivec4.curios.api.CuriosAPI;
-import top.theillusivec4.curios.api.capability.CuriosCapability;
-import top.theillusivec4.curios.api.capability.ICurio;
-import top.theillusivec4.curios.api.imc.CurioIMCMessage;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.SlotTypePreset;
+import top.theillusivec4.curios.api.type.capability.ICurio;
 
 @Mod(CurioOfUndying.MODID)
 public class CurioOfUndying {
@@ -71,7 +72,8 @@ public class CurioOfUndying {
   }
 
   private void enqueue(final InterModEnqueueEvent evt) {
-    InterModComms.sendTo("curios", CuriosAPI.IMC.REGISTER_TYPE, () -> new CurioIMCMessage("charm"));
+    InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE,
+        () -> SlotTypePreset.CHARM.getMessageBuilder().build());
   }
 
   @SubscribeEvent
@@ -88,12 +90,12 @@ public class CurioOfUndying {
       }
 
       @Override
-      public boolean hasRender(String identifier, LivingEntity livingEntity) {
+      public boolean canRender(String identifier, int index, LivingEntity livingEntity) {
         return true;
       }
 
       @Override
-      public void render(String identifier, MatrixStack matrixStack,
+      public void render(String identifier, int index, MatrixStack matrixStack,
           IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing,
           float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw,
           float headPitch) {
@@ -103,7 +105,7 @@ public class CurioOfUndying {
         matrixStack.translate(0.0F, 0.5F, -0.4F);
         matrixStack.rotate(Direction.DOWN.getRotation());
         Minecraft.getInstance().getItemRenderer()
-            .renderItem(evt.getObject(), TransformType.NONE, light, OverlayTexture.DEFAULT_LIGHT,
+            .renderItem(evt.getObject(), TransformType.NONE, light, OverlayTexture.NO_OVERLAY,
                 matrixStack, renderTypeBuffer);
       }
     };
@@ -140,10 +142,11 @@ public class CurioOfUndying {
         return false;
       }
     }
-    return CuriosAPI.getCurioEquipped(Items.TOTEM_OF_UNDYING, livingEntity).map(totem -> {
-      activateTotem(livingEntity, totem.getRight());
-      return true;
-    }).orElse(false);
+    return CuriosApi.getCuriosHelper().findEquippedCurio(Items.TOTEM_OF_UNDYING, livingEntity)
+        .map(totem -> {
+          this.activateTotem(livingEntity, totem.getRight());
+          return true;
+        }).orElse(false);
   }
 
   private void activateTotem(LivingEntity livingEntity, ItemStack totem) {
