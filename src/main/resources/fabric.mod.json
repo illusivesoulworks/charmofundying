@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "curioofundying",
+  "version": "${version}",
+  "name": "Curio of Undying",
+  "description": "Adds curio support for the Totem of Undying so you don't have to be holding it.",
+  "authors": ["C4"],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/curio-of-undying-fabric",
+    "sources": "https://github.com/TheIllusiveC4/CurioOfUndying",
+    "issues": "https://github.com/TheIllusiveC4/CurioOfUndying/issues"
+  },
+  "license": "LGPLv3.0",
+  "icon": "assets/curioofundying/curioofundying_icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "top.theillusivec4.curioofundying.CurioOfUndying"
+    ],
+    "client": [
+      "top.theillusivec4.curioofundying.CurioOfUndyingClient"
+    ]
+  },
+  "mixins": [
+    "curioofundying.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "minecraft": "1.16.x"
+  }
+}
