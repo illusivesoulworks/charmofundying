@@ -10,7 +10,7 @@
     "sources": "https://github.com/TheIllusiveC4/CurioOfUndying",
     "issues": "https://github.com/TheIllusiveC4/CurioOfUndying/issues"
   },
-  "license": "LGPLv3.0",
+  "license": "LGPL-3.0-or-later",
   "icon": "assets/curioofundying/curioofundying_icon.png",
   "environment": "*",
   "entrypoints": {
