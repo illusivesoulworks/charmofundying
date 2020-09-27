@@ -15,7 +15,7 @@ apply plugin: 'com.matthewprenger.cursegradle'
 
 version = "${mod_version}"
 group = "${mod_group}"
-archivesBaseName = "forge-${mod_id}"
+archivesBaseName = "${mod_id}-forge"
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -84,7 +84,7 @@ jar {
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    setArchiveClassifier('sources')
     from sourceSets.main.allJava
 }
 
