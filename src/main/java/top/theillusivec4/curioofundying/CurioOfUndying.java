@@ -21,7 +21,18 @@ package top.theillusivec4.curioofundying;
 
 import nerdhub.cardinal.components.api.event.ItemComponentCallbackV2;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.stat.Stats;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import top.theillusivec4.curioofundying.integration.DeadTotemsIntegration;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosComponent;
 import top.theillusivec4.curios.api.SlotTypeInfo.BuildScheme;
@@ -30,8 +41,11 @@ import top.theillusivec4.curios.api.type.component.ICurio;
 
 public class CurioOfUndying implements ModInitializer {
 
+  private static boolean deadTotemsLoaded = false;
+
   @Override
   public void onInitialize() {
+    deadTotemsLoaded = FabricLoader.getInstance().isModLoaded("deadtotems");
     CuriosApi.enqueueSlotType(BuildScheme.REGISTER, SlotTypePreset.CHARM.getInfoBuilder().build());
     ItemComponentCallbackV2.event(Items.TOTEM_OF_UNDYING).register(
         ((item, itemStack, componentContainer) -> componentContainer
@@ -41,5 +55,38 @@ public class CurioOfUndying implements ModInitializer {
                 return true;
               }
             })));
+  }
+
+  public static boolean tryUseCurioTotem(LivingEntity livingEntity, DamageSource source) {
+
+    if (source.isOutOfWorld()) {
+      return false;
+    } else {
+      ItemStack stack = CuriosApi.getCuriosHelper()
+          .findEquippedCurio(Items.TOTEM_OF_UNDYING, livingEntity).map(ImmutableTriple::getRight)
+          .orElse(ItemStack.EMPTY);
+
+      if (!stack.isEmpty()) {
+        ItemStack stack2 = stack.copy();
+        stack.decrement(1);
+
+        if (deadTotemsLoaded) {
+          DeadTotemsIntegration.giveDeadTotem(livingEntity);
+        }
+
+        if (livingEntity instanceof ServerPlayerEntity) {
+          ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) livingEntity;
+          serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(Items.TOTEM_OF_UNDYING));
+          Criteria.USED_TOTEM.trigger(serverPlayerEntity, stack2);
+        }
+        livingEntity.setHealth(1.0F);
+        livingEntity.clearStatusEffects();
+        livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 900, 1));
+        livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 100, 1));
+        livingEntity.world.sendEntityStatus(livingEntity, (byte) 35);
+        return true;
+      }
+    }
+    return false;
   }
 }

@@ -21,6 +21,10 @@ repositories {
 		name = "Ladysnake Libs"
 		url = 'https://dl.bintray.com/ladysnake/libs'
 	}
+	maven {
+		name = "CurseMaven"
+		url = 'https://www.cursemaven.com'
+	}
 }
 
 dependencies {
@@ -30,6 +34,10 @@ dependencies {
 	modCompile "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
+
+	modCompileOnly "curse.maven:deadtotems-409997:${project.deadtotems_file}"
+	modRuntime "curse.maven:deadtotems-409997:${project.deadtotems_file}"
+	modRuntime "curse.maven:nbtcrafting-314633:${project.nbtcrafting_file}"
 }
 
 processResources {
