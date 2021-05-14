@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "package": "top.theillusivec4.curioofundying.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "curioofundying.refmap.json",
+  "mixins": [
+    "LivingEntityMixin"
+  ],
+  "minVersion": "0.8"
+}
