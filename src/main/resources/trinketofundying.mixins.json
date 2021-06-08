@@ -1,8 +1,8 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "top.theillusivec4.curioofundying.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "package": "top.theillusivec4.trinketofundying.mixin",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [
     "LivingEntityMixin"
   ],
