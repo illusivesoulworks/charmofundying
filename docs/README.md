@@ -4,7 +4,7 @@ Curio of Undying is a mod that uses the Curios API to add a new slot, the Charm 
 the Totem of Undying to be placed into this slot, either directly or through using the totem in-hand.
 ## Features
 
-[![](https://i.ibb.co/qmyCPfp/undying-screenshot.png)]
+![](https://i.ibb.co/qmyCPfp/undying-screenshot.png)
 
 While the totem is in this slot, the player will be granted the same death protection effect as if it was held in the
 player's hand. This allows the player to gain the benefits of the totem without the hassle of needing to remember to
