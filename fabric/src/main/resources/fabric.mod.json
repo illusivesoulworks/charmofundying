@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "trinketofundying",
+  "version": "${version}",
+  "name": "Trinket of Undying",
+  "description": "Adds trinket support for the Totem of Undying so you don't have to be holding it.",
+  "authors": ["C4"],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/trinket-of-undying-fabric",
+    "sources": "https://github.com/TheIllusiveC4/TrinketOfUndying",
+    "issues": "https://github.com/TheIllusiveC4/TrinketOfUndying/issues"
+  },
+  "license": "LGPL-3.0-or-later",
+  "icon": "assets/trinketofundying/trinketofundying_icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "top.theillusivec4.trinketofundying.TrinketOfUndying"
+    ],
+    "client": [
+      "top.theillusivec4.trinketofundying.TrinketOfUndyingClient"
+    ]
+  },
+  "mixins": [
+    "trinketofundying.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "minecraft": "1.17.x",
+    "trinkets": ">=3.0.0"
+  }
+}

@@ -1,0 +1,20 @@
+name: Question
+description: Ask a question about the project
+title: "[Question]: "
+labels: ["type: question", "status: triage"]
+assignees:
+ - TheIllusiveC4
+body: 
+- type: markdown
+  attributes:
+    value: |
+      Hello, and thanks for your interest in the project. Please respond to the following questions to the best of your ability.
+- type: textarea
+  id: issue-description
+  attributes:
+    label: What is your question?
+    description: Please try to be as clear and concise as possible.
+    placeholder: How much wood could a woodchuck chuck if a woodchuck could chuck wood?
+  validations:
+    required: true
+
