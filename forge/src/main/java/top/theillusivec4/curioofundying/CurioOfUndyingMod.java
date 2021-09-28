@@ -120,7 +120,7 @@ public class CurioOfUndyingMod {
       stack.shrink(1);
 
       if (livingEntity instanceof ServerPlayer player) {
-        player.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
+        player.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING), 1);
         CriteriaTriggers.USED_TOTEM.trigger(player, stack);
       }
       livingEntity.setHealth(1.0F);
