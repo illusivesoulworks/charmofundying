@@ -21,7 +21,6 @@ import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
 import java.util.List;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -32,16 +31,8 @@ import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Pair;
-import top.theillusivec4.trinketofundying.integration.DeadTotemsIntegration;
 
 public class TrinketOfUndying implements ModInitializer {
-
-  private static boolean deadTotemsLoaded = false;
-
-  @Override
-  public void onInitialize() {
-    deadTotemsLoaded = FabricLoader.getInstance().isModLoaded("deadtotems");
-  }
 
   public static boolean tryUseCurioTotem(LivingEntity livingEntity, DamageSource source) {
 
@@ -57,10 +48,6 @@ public class TrinketOfUndying implements ModInitializer {
         ItemStack stack2 = stack.copy();
         stack.decrement(1);
 
-        if (deadTotemsLoaded) {
-          DeadTotemsIntegration.giveDeadTotem(livingEntity);
-        }
-
         if (livingEntity instanceof ServerPlayerEntity serverPlayerEntity) {
           serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(Items.TOTEM_OF_UNDYING));
           Criteria.USED_TOTEM.trigger(serverPlayerEntity, stack2);
@@ -74,5 +61,10 @@ public class TrinketOfUndying implements ModInitializer {
       }
     }
     return false;
+  }
+
+  @Override
+  public void onInitialize() {
+    // NO-OP
   }
 }

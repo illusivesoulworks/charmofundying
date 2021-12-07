@@ -1,10 +1,10 @@
 plugins {
-	id 'fabric-loom' version '0.8-SNAPSHOT'
+	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -38,13 +38,10 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "dev.emi:trinkets:${trinkets_version}"
-
-//	modCompileOnly "curse.maven:deadtotems-409997:${project.deadtotems_file}"
-//	modRuntime "curse.maven:deadtotems-409997:${project.deadtotems_file}"
-//	modRuntime "curse.maven:nbtcrafting-314633:${project.nbtcrafting_file}"
 }
 
 processResources {
+	from("CHANGELOG.md")
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
@@ -54,7 +51,7 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
-	it.options.release = 16
+	it.options.release = 17
 }
 
 java {
@@ -64,7 +61,7 @@ java {
 sourceSets {
 	main {
 		resources {
-			srcDirs += 'docs'
+			srcDirs += '../docs'
 		}
 	}
 }
@@ -75,8 +72,8 @@ curseforge {
 		id = "${curse_id}"
 		releaseType = "${curse_release}"
 		changelogType = 'markdown'
-		changelog = file('docs/CHANGELOG.md')
-		addGameVersion "Java 16"
+		changelog = file('CHANGELOG.md')
+		addGameVersion "Java 17"
         addGameVersion "Fabric"
 		"${curse_versions}".split(',').each {
 			addGameVersion "${it}"

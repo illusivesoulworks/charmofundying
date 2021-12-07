@@ -30,7 +30,7 @@ public class LivingEntityMixin {
 
   @SuppressWarnings("ConstantConditions")
   @Inject(method = "tryUseTotem", at = @At(value = "HEAD"), cancellable = true)
-  private void tryUseTotem(DamageSource source, CallbackInfoReturnable<Boolean> ci) {
+  private void trinketofundying$tryUseTotem(DamageSource source, CallbackInfoReturnable<Boolean> ci) {
     LivingEntity livingEntity = (LivingEntity) (Object) this;
 
     if (TrinketOfUndying.tryUseCurioTotem(livingEntity, source)) {
