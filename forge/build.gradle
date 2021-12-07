@@ -25,10 +25,10 @@ version = "${mod_version}"
 group = "top.theillusivec4.curioofundying"
 archivesBaseName = "curioofundying-forge"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
-    mappings channel: 'parchment', version: '2021.09.05-1.17.1'
+    mappings channel: 'parchment', version: '2021.12.05-1.17.1'
 
     runs {
         client {
@@ -63,11 +63,6 @@ minecraft {
             }
         }
     }
-}
-
-// todo: https://github.com/MinecraftForge/MinecraftForge/pull/8064
-minecraft.runs.all {
-    property 'ignoreList', "bootstraplauncher,securejarhandler,asm-commons,asm-util,asm-analysis,asm-tree,asm,client-extra,fmlcore,javafmllanguage,mclanguage,forge-1.17.1-37.0.70,1.17.1-forge-37.0.70"
 }
 
 mixin {

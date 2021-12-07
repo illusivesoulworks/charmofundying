@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "top.theillusivec4.curioofundying.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "curioofundying.refmap.json",
   "mixins": [
     "LivingEntityMixin"
