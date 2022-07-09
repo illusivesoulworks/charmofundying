@@ -1,94 +1,107 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'maven-publish'
+    id 'idea'
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
-
-minecraft {
-}
-
-repositories {
-    maven {
-        url = "https://maven.theillusivec4.top/"
-    }
-	maven {
-		name = "TerraformersMC"
-		url = "https://maven.terraformersmc.com/"
-	}
-	maven {
-		name = "Ladysnake Libs"
-		url = "https://ladysnake.jfrog.io/artifactory/mods"
-	}
-	maven {
-		name = "CurseMaven"
-		url = 'https://www.cursemaven.com'
-	}
-}
+archivesBaseName = "${mod_id}-fabric"
 
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation "dev.emi:trinkets:${trinkets_version}"
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings(loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${fabric_parchment_mc_version}:${fabric_parchment_version}@zip")
+    })
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    modImplementation "dev.emi:trinkets:${trinkets_version}"
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation project(":common")
 }
+
+loom {
+    runs {
+        client {
+            client()
+            setConfigName("Fabric Client")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+        server {
+            server()
+            setConfigName("Fabric Server")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+    }
+}
+
 
 processResources {
-	from("CHANGELOG.md")
-	inputs.property "version", project.version
+    from project(":common").sourceSets.main.resources
+    inputs.property "version", project.version
 
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
+    filesMatching("fabric.mod.json") {
+        expand 'version': project.version, 'fabric_mc_version_range': project.fabric_mc_version_range, 'license': project.license,
+                'mod_id': project.mod_id, 'mod_author': project.mod_author, 'mod_description': project.mod_description,
+                'mod_name': project.mod_name, 'issue_tracker': project.issue_tracker
+    }
+
+    filesMatching("pack.mcmeta") {
+        expand 'mod_name': project.mod_name
+    }
+
+    filesMatching('*.mixins.json') {
+        expand "refmap_target": "${archivesBaseName}-"
+    }
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = "UTF-8"
-	it.options.release = 17
+tasks.withType(JavaCompile) {
+    source(project(":common").sourceSets.main.allSource)
 }
 
-java {
-	withSourcesJar()
-}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+        }
+    }
 
-sourceSets {
-	main {
-		resources {
-			srcDirs += '../docs'
-		}
-	}
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
+    }
 }
 
 curseforge {
-	project {
-		apiKey = findProperty('curseKey') ?: 0
-		id = "${curse_id}"
-		releaseType = "${curse_release}"
-		changelogType = 'markdown'
-		changelog = file('CHANGELOG.md')
-		addGameVersion "Java 17"
+    project {
+        apiKey = findProperty('curseKey') ?: 0
+        id = "${cf_fabric_id}"
+        releaseType = "${cf_release}"
+        changelogType = 'markdown'
+        changelog = file("../CHANGELOG_LATEST.md")
+        addGameVersion "Java 17"
         addGameVersion "Fabric"
-		"${curse_versions}".split(',').each {
-			addGameVersion "${it}"
-		}
-		addArtifact(sourcesJar)
-		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
+        "${cf_versions}".split(',').each {
+            addGameVersion "${it}"
+        }
+        addArtifact(sourcesJar)
+        mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
 
-		relations {
-			requiredDependency 'trinkets'
-		}
-		afterEvaluate {
-			uploadTask.dependsOn(remapJar)
-		}
-	}
-	options {
-		forgeGradleIntegration = false
-	}
+        relations {
+            requiredDependency 'fabric-api'
+        }
+
+        afterEvaluate {
+            uploadTask.dependsOn(remapJar)
+        }
+    }
+    options {
+        forgeGradleIntegration = false
+    }
 }

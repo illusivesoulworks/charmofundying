@@ -1,0 +1,70 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+Prior to version 6.0.0, this project used MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH.
+
+## [6.0.0-beta.1+1.19] - 2022.06.30
+### Changed
+- Merged Forge and Fabric versions of the project together using the MultiLoader template
+- Changed to [Semantic Versioning](http://semver.org/spec/v2.0.0.html)
+- Updated to Minecraft 1.19
+- [Forge] Updated to Forge 41+
+- [Fabric] Updated to Fabric API 0.55.2+
+
+## [1.18-5.3.0.0] - 2021.12.07
+### Changed
+- Updated to Minecraft 1.18
+
+## [1.17.1-5.3.0.0] - 2021.09.27
+### Changed
+- Updated to Minecraft 1.17.1
+- Updated to Forge 37.0.59+
+- Updated to Curios 1.17.1-5.0+
+
+## [1.16.5-5.2.0.0] - 2021.05.13
+### Fixed
+- Fixed bug with Hardcore Revival Mod [#3](https://github.com/TheIllusiveC4/CurioOfUndying/issues/3)
+
+## [1.16.4-5.1.0.0] - 2020.11.24
+### Changed
+- Updated to Minecraft 1.16.4
+
+## [1.16.3-5.0.0.1] - 2020.09.27
+### Changed
+- Updated to Minecraft 1.16.3
+
+## [1.16.2-5.0.0.0] - 2020.08.13
+### Changed
+- Updated to Minecraft 1.16.2
+
+## [1.16.1-4.0.0.0] - 2020.07.01
+### Changed
+- Updated to Minecraft 1.16.1
+
+## [1.15.2-3.0.0.0] - 2020.02.12
+### Changed
+- Updated to Minecraft 1.15.2
+
+## [1.14.4-2.0.1.0] - 2020.02.11
+### Added
+- Added rendering [#1](https://github.com/TheIllusiveC4/CurioOfUndying/issues/1)
+
+## [1.14.4-2.0.0.0] - 2019.09.15
+### Changed
+- Updated to Forge 28.1.0+
+
+## [1.14.4-2.0.0.0-beta2] - 2019.07.24
+### Changed
+- Updated to Minecraft 1.14.4
+
+## [1.14.3-2.0.0.0-beta1] - 2019.07.02
+### Changed
+- Updated to Minecraft 1.14.3
+
+## [1.13.2-1.1.0.0] - 2019.04.11
+### Changed
+- Updated to Curios 0.10+
+
+## [1.13.2-1.0.0.0] - 2019.03.07
+- Initial release

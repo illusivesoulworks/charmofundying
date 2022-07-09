@@ -1,31 +1,30 @@
 modLoader="javafml"
-loaderVersion="${loader_version}"
-license="LGPL-3.0-or-later"
-issueTrackerURL="https://github.com/TheIllusiveC4/CurioOfUndying/issues"
-logoFile="curioofundying_icon.png"
+loaderVersion="[41,)"
+license="${license}"
 logoBlur=false
+issueTrackerURL="${issue_tracker}"
+logoFile="${mod_id}_icon.png"
 [[mods]]
-modId="curioofundying"
+modId="${mod_id}"
 version="${version}"
-displayName="Curio of Undying"
-displayURL="https://github.com/TheIllusiveC4/CurioOfUndying"
-authors="C4"
+displayName="${mod_name}"
+authors="${mod_author}"
 description='''
-Adds curio support for the Totem of Undying so you don't have to be holding it.
+${mod_description}
 '''
-[[dependencies.curioofundying]]
+[[dependencies.charmofundying]]
     modId="forge"
     mandatory=true
     versionRange="${forge_version_range}"
     ordering="NONE"
     side="BOTH"
-[[dependencies.curioofundying]]
+[[dependencies.charmofundying]]
     modId="minecraft"
     mandatory=true
-    versionRange="${mc_version_range}"
+    versionRange="${forge_mc_version_range}"
     ordering="NONE"
     side="BOTH"
-[[dependencies.curioofundying]]
+[[dependencies.charmofundying]]
     modId="curios"
     mandatory=true
     versionRange="${curios_version_range}"
