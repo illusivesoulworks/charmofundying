@@ -82,7 +82,7 @@ curseforge {
 		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"))
 
 		relations {
-			requiredDependency 'trinkets-fabric'
+			requiredDependency 'trinkets'
 		}
 		afterEvaluate {
 			uploadTask.dependsOn(remapJar)
