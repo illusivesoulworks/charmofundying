@@ -18,17 +18,20 @@
 
 package com.illusivesoulworks.charmofundying;
 
+import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.platform.Services;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class CharmOfUndyingCommonMod {
+
+  public static void init() {
+    TotemProviders.init();
+  }
 
   public static boolean hasTotem(LivingEntity livingEntity) {
     ItemStack stack = Services.PLATFORM.findTotem(livingEntity);
@@ -41,11 +44,8 @@ public class CharmOfUndyingCommonMod {
         player.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING), 1);
         CriteriaTriggers.USED_TOTEM.trigger(player, copy);
       }
-      livingEntity.setHealth(1.0F);
-      livingEntity.removeAllEffects();
-      livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
-      livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
-      livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
+      TotemProviders.getEffectProvider(copy.getItem())
+          .ifPresent(effectProvider -> effectProvider.applyEffects(livingEntity));
       livingEntity.level.broadcastEntityEvent(livingEntity, (byte) 35);
       return true;
     }

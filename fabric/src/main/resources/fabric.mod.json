@@ -14,8 +14,8 @@
   "icon": "${mod_id}_icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "com.illusivesoulworks.charmofundying.CharmOfUndyingFabricClientMod"
+    "main": [
+      "com.illusivesoulworks.charmofundying.CharmOfUndyingFabricMod"
     ]
   },
   "mixins": [

@@ -18,10 +18,14 @@
 
 package com.illusivesoulworks.charmofundying.platform;
 
+import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.platform.services.IPlatform;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
@@ -29,7 +33,23 @@ public class ForgePlatform implements IPlatform {
 
   @Override
   public ItemStack findTotem(LivingEntity livingEntity) {
-    return CuriosApi.getCuriosHelper().findFirstCurio(livingEntity, Items.TOTEM_OF_UNDYING)
+    return CuriosApi.getCuriosHelper()
+        .findFirstCurio(livingEntity, stack -> TotemProviders.IS_TOTEM.test(stack.getItem()))
         .map(SlotResult::stack).orElse(ItemStack.EMPTY);
+  }
+
+  @Override
+  public String getRegistryName(Item item) {
+    ResourceLocation rl = ForgeRegistries.ITEMS.getKey(item);
+
+    if (rl != null) {
+      return rl.toString();
+    }
+    return "";
+  }
+
+  @Override
+  public boolean isModLoaded(String name) {
+    return ModList.get().isLoaded(name);
   }
 }

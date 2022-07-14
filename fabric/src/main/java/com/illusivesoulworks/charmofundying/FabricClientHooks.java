@@ -16,17 +16,17 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.charmofundying.platform.services;
+package com.illusivesoulworks.charmofundying;
 
-import net.minecraft.world.entity.LivingEntity;
+import com.illusivesoulworks.charmofundying.client.TotemRenderer;
+import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
-public interface IPlatform {
+public class FabricClientHooks {
 
-    ItemStack findTotem(LivingEntity livingEntity);
-
-    String getRegistryName(Item item);
-
-    boolean isModLoaded(String name);
+  public static void registerTrinketRenderer(Item item) {
+    TrinketRendererRegistry.registerRenderer(item,
+        (stack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch) -> TotemRenderer.render(
+            entity, contextModel, matrices, stack, vertexConsumers, light));
+  }
 }

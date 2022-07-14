@@ -19,9 +19,12 @@
 package com.illusivesoulworks.charmofundying;
 
 import com.illusivesoulworks.charmofundying.client.CurioTotemRenderer;
+import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,6 +39,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
@@ -48,6 +52,7 @@ import top.theillusivec4.curios.api.type.capability.ICurio;
 public class CharmOfUndyingForgeMod {
 
   public CharmOfUndyingForgeMod() {
+    CharmOfUndyingCommonMod.init();
     final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
@@ -59,7 +64,14 @@ public class CharmOfUndyingForgeMod {
   }
 
   private void clientSetup(final FMLClientSetupEvent evt) {
-    CuriosRendererRegistry.register(Items.TOTEM_OF_UNDYING, CurioTotemRenderer::new);
+
+    for (String name : TotemProviders.getItems()) {
+      Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(name));
+
+      if (item != null && item != Items.AIR) {
+        CuriosRendererRegistry.register(item, CurioTotemRenderer::new);
+      }
+    }
   }
 
   private void enqueue(final InterModEnqueueEvent evt) {
@@ -69,7 +81,7 @@ public class CharmOfUndyingForgeMod {
 
   private void attachCapabilities(AttachCapabilitiesEvent<ItemStack> evt) {
 
-    if (evt.getObject().getItem() != Items.TOTEM_OF_UNDYING) {
+    if (!TotemProviders.IS_TOTEM.test(evt.getObject().getItem())) {
       return;
     }
     ICurio curio = new ICurio() {

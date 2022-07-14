@@ -16,19 +16,20 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.charmofundying;
+package com.illusivesoulworks.charmofundying.common;
 
-import com.illusivesoulworks.charmofundying.client.TotemRenderer;
-import dev.emi.trinkets.api.client.TrinketRendererRegistry;
-import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 
-public class CharmOfUndyingFabricClientMod implements ClientModInitializer {
+public class VanillaTotemEffectProvider implements ITotemEffectProvider {
 
   @Override
-  public void onInitializeClient() {
-    TrinketRendererRegistry.registerRenderer(Items.TOTEM_OF_UNDYING,
-        (stack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch) -> TotemRenderer.render(
-            entity, contextModel, matrices, stack, vertexConsumers, light));
+  public void applyEffects(final LivingEntity livingEntity) {
+    livingEntity.setHealth(1.0F);
+    livingEntity.removeAllEffects();
+    livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
+    livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
+    livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
   }
 }

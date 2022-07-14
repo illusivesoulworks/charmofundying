@@ -16,17 +16,11 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.charmofundying.platform.services;
+package com.illusivesoulworks.charmofundying.common;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
-public interface IPlatform {
+public interface ITotemEffectProvider {
 
-    ItemStack findTotem(LivingEntity livingEntity);
-
-    String getRegistryName(Item item);
-
-    boolean isModLoaded(String name);
+  void applyEffects(LivingEntity livingEntity);
 }

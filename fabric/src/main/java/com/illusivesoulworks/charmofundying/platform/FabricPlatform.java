@@ -18,22 +18,36 @@
 
 package com.illusivesoulworks.charmofundying.platform;
 
+import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.platform.services.IPlatform;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
 import java.util.List;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.Registry;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public class FabricPlatform implements IPlatform {
 
   @Override
   public ItemStack findTotem(LivingEntity livingEntity) {
     return TrinketsApi.getTrinketComponent(livingEntity).map(component -> {
-      List<Tuple<SlotReference, ItemStack>> res = component.getEquipped(Items.TOTEM_OF_UNDYING);
+      List<Tuple<SlotReference, ItemStack>> res =
+          component.getEquipped(stack -> TotemProviders.IS_TOTEM.test(stack.getItem()));
       return res.size() > 0 ? res.get(0).getB() : ItemStack.EMPTY;
     }).orElse(ItemStack.EMPTY);
+  }
+
+  @Override
+  public String getRegistryName(Item item) {
+    return Registry.ITEM.getKey(item).toString();
+  }
+
+  @Override
+  public boolean isModLoaded(String name) {
+    return FabricLoader.getInstance().isModLoaded(name);
   }
 }
