@@ -17,8 +17,8 @@ hold the totem or the need to sacrifice a useful hotbar/inventory slot to keep o
 ## Downloads
 
 **CurseForge**
-- [![](http://cf.way2muchnoise.eu/short_curio-of-undying_downloads%20on%20Forge.svg)](https://www.curseforge.com/minecraft/mc-mods/curio-of-undying/files) [![](http://cf.way2muchnoise.eu/versions/curio-of-undying.svg)](https://www.curseforge.com/minecraft/mc-mods/curio-of-undying)
-- [![](http://cf.way2muchnoise.eu/short_trinket-of-undying-fabric_downloads%20on%20Fabric.svg)](https://www.curseforge.com/minecraft/mc-mods/trinket-of-undying-fabric/files) [![](http://cf.way2muchnoise.eu/versions/trinket-of-undying-fabric.svg)](https://www.curseforge.com/minecraft/mc-mods/trinket-of-undying-fabric)
+- [![](http://cf.way2muchnoise.eu/short_charm-of-undying_downloads%20on%20Forge.svg)](https://www.curseforge.com/minecraft/mc-mods/charm-of-undying/files) [![](http://cf.way2muchnoise.eu/versions/charm-of-undying.svg)](https://www.curseforge.com/minecraft/mc-mods/charm-of-undying)
+- [![](http://cf.way2muchnoise.eu/short_charm-of-undying-fabric_downloads%20on%20Fabric.svg)](https://www.curseforge.com/minecraft/mc-mods/charm-of-undying-fabric/files) [![](http://cf.way2muchnoise.eu/versions/charm-of-undying-fabric.svg)](https://www.curseforge.com/minecraft/mc-mods/charm-of-undying-fabric)
 
 ## Support
 
