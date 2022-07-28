@@ -34,10 +34,12 @@ public class MixinLivingEntity {
   @Inject(at = @At("HEAD"), method = "checkTotemDeathProtection", cancellable = true)
   private void charmofundying$checkTotemDeathProtection(DamageSource src,
                                                         CallbackInfoReturnable<Boolean> cir) {
-    if (src.isBypassInvul()) {
-      cir.setReturnValue(false);
-    } else if (CharmOfUndyingCommonMod.hasTotem((LivingEntity) (Object) this)) {
-      cir.setReturnValue(true);
+    if (CharmOfUndyingCommonMod.hasTotem((LivingEntity) (Object) this)) {
+      if (src.isBypassInvul()) {
+        cir.setReturnValue(false);
+      } else {
+        cir.setReturnValue(true);
+      }
     }
   }
 }
