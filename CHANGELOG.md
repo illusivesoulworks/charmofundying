@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 Prior to version 6.0.0, this project used MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH.
 
+## [6.0.0-beta.3+1.19.1] - 2022.07.29
+### Changed
+- Updated to Minecraft 1.19.1
+- [Forge] Updated to Forge 42+
+- [Fabric] Updated to Fabric API 0.58.5+
+- Changed mixin to accommodate for Void Totem integration
+
 ## [6.0.0-beta.2+1.19] - 2022.07.14
 ### Added
 - Added integration with Biome Makeover's Enchanted Totem

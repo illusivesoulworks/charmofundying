@@ -31,12 +31,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MixinLivingEntity {
 
   @SuppressWarnings("ConstantConditions")
-  @Inject(at = @At("HEAD"), method = "checkTotemDeathProtection", cancellable = true)
+  @Inject(at = @At(value = "INVOKE", target = "net/minecraft/world/InteractionHand.values()[Lnet/minecraft/world/InteractionHand;"), method = "checkTotemDeathProtection", cancellable = true)
   private void charmofundying$checkTotemDeathProtection(DamageSource src,
                                                         CallbackInfoReturnable<Boolean> cir) {
-    if (src.isBypassInvul()) {
-      cir.setReturnValue(false);
-    } else if (CharmOfUndyingCommonMod.hasTotem((LivingEntity) (Object) this)) {
+    if (CharmOfUndyingCommonMod.hasTotem((LivingEntity) (Object) this)) {
       cir.setReturnValue(true);
     }
   }
