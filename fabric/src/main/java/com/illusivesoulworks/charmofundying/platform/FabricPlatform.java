@@ -24,7 +24,7 @@ import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
 import java.util.List;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -43,7 +43,7 @@ public class FabricPlatform implements IPlatform {
 
   @Override
   public String getRegistryName(Item item) {
-    return Registry.ITEM.getKey(item).toString();
+    return BuiltInRegistries.ITEM.getKey(item).toString();
   }
 
   @Override

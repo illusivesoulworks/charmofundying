@@ -25,7 +25,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -42,7 +42,7 @@ public class CharmOfUndyingFabricMod implements ModInitializer {
       Set<String> remove = new HashSet<>();
 
       for (String name : totems) {
-        Item item = Registry.ITEM.get(ResourceLocation.tryParse(name));
+        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(name));
 
         if (item != Items.AIR) {
           FabricClientHooks.registerTrinketRenderer(item);
@@ -51,7 +51,7 @@ public class CharmOfUndyingFabricMod implements ModInitializer {
       }
       totems.removeAll(remove);
     }
-    RegistryEntryAddedCallback.event(Registry.ITEM).register((rawId, id, object) -> {
+    RegistryEntryAddedCallback.event(BuiltInRegistries.ITEM).register((rawId, id, object) -> {
 
       if (isClient && !totems.isEmpty()) {
         String name = id.toString();
