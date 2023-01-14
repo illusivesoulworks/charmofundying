@@ -23,6 +23,7 @@ import com.illusivesoulworks.charmofundying.platform.Services;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,7 +34,7 @@ public class CharmOfUndyingCommonMod {
     TotemProviders.init();
   }
 
-  public static boolean hasTotem(LivingEntity livingEntity) {
+  public static boolean useTotem(DamageSource damageSource, LivingEntity livingEntity) {
     ItemStack stack = Services.PLATFORM.findTotem(livingEntity);
 
     if (!stack.isEmpty()) {
@@ -44,10 +45,14 @@ public class CharmOfUndyingCommonMod {
         player.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING), 1);
         CriteriaTriggers.USED_TOTEM.trigger(player, copy);
       }
-      TotemProviders.getEffectProvider(copy.getItem())
-          .ifPresent(effectProvider -> effectProvider.applyEffects(livingEntity));
-      livingEntity.level.broadcastEntityEvent(livingEntity, (byte) 35);
-      return true;
+      boolean use = TotemProviders.getEffectProvider(copy.getItem())
+          .map(effectProvider -> effectProvider.applyEffects(livingEntity, damageSource, copy))
+          .orElse(false);
+
+      if (use) {
+        Services.PLATFORM.broadcastTotemEvent(livingEntity);
+        return true;
+      }
     }
     return false;
   }

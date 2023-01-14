@@ -20,6 +20,7 @@ package com.illusivesoulworks.charmofundying;
 
 import com.illusivesoulworks.charmofundying.client.CurioTotemRenderer;
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
+import com.illusivesoulworks.charmofundying.common.network.CharmOfUndyingForgeNetwork;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.core.Direction;
@@ -60,6 +61,7 @@ public class CharmOfUndyingForgeMod {
   }
 
   private void setup(final FMLCommonSetupEvent evt) {
+    CharmOfUndyingForgeNetwork.setup();
     MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, this::attachCapabilities);
   }
 

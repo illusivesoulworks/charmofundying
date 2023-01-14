@@ -18,12 +18,15 @@
 
 package com.illusivesoulworks.charmofundying;
 
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CharmOfUndyingConstants {
 
-	public static final String MOD_ID = "charmofundying";
-	public static final String MOD_NAME = "Charm of Undying";
-	public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
+  public static final String MOD_ID = "charmofundying";
+  public static final String MOD_NAME = "Charm of Undying";
+  public static final Logger LOG = LoggerFactory.getLogger(MOD_NAME);
+
+  public static ResourceLocation TOTEM_EVENT = new ResourceLocation(MOD_ID, "use_totem");
 }

@@ -19,6 +19,7 @@
 package com.illusivesoulworks.charmofundying;
 
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
+import com.illusivesoulworks.charmofundying.common.integration.FWaystonesVoidTotemEffectProvider;
 import java.util.HashSet;
 import java.util.Set;
 import net.fabricmc.api.EnvType;
@@ -35,6 +36,10 @@ public class CharmOfUndyingFabricMod implements ModInitializer {
   @Override
   public void onInitialize() {
     CharmOfUndyingCommonMod.init();
+
+    if (FabricLoader.getInstance().isModLoaded("fwaystones")) {
+      FWaystonesVoidTotemEffectProvider.init();
+    }
     boolean isClient = FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
     Set<String> totems = new HashSet<>(TotemProviders.getItems());
 

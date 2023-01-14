@@ -16,6 +16,9 @@
   "entrypoints": {
     "main": [
       "com.illusivesoulworks.charmofundying.CharmOfUndyingFabricMod"
+    ],
+    "client": [
+      "com.illusivesoulworks.charmofundying.client.CharmOfUndyingFabricClientMod"
     ]
   },
   "mixins": [

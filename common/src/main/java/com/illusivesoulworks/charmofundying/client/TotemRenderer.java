@@ -35,6 +35,7 @@ public class TotemRenderer {
                             PoseStack poseStack, ItemStack stack, MultiBufferSource buffer,
                             int light) {
     Services.CLIENT_PLATFORM.translateToPosition(livingEntity, model, poseStack);
+    poseStack.translate(0.0F, -0.2F, 0.0F);
     poseStack.scale(0.35F, 0.35F, 0.35F);
     poseStack.mulPose(Direction.DOWN.getRotation());
     Minecraft.getInstance().getItemRenderer()

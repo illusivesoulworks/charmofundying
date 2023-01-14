@@ -24,9 +24,11 @@ import net.minecraft.world.item.ItemStack;
 
 public interface IPlatform {
 
-    ItemStack findTotem(LivingEntity livingEntity);
+  ItemStack findTotem(LivingEntity livingEntity);
 
-    String getRegistryName(Item item);
+  String getRegistryName(Item item);
 
-    boolean isModLoaded(String name);
+  boolean isModLoaded(String name);
+
+  void broadcastTotemEvent(LivingEntity livingEntity);
 }

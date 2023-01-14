@@ -16,13 +16,21 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.charmofundying.common;
+package com.illusivesoulworks.charmofundying.client;
 
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import com.illusivesoulworks.charmofundying.CharmOfUndyingConstants;
+import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotem;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
-public interface ITotemEffectProvider {
+public class CharmOfUndyingFabricClientMod implements ClientModInitializer {
 
-  boolean applyEffects(LivingEntity livingEntity, DamageSource damageSource, ItemStack stack);
+  @Override
+  public void onInitializeClient() {
+    ClientPlayNetworking.registerGlobalReceiver(CharmOfUndyingConstants.TOTEM_EVENT,
+        (client, listener, buf, responseSender) -> {
+          SPacketUseTotem msg = SPacketUseTotem.decode(buf);
+          client.execute(() -> SPacketUseTotem.handle(msg));
+        });
+  }
 }

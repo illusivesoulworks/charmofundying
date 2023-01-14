@@ -19,12 +19,15 @@
 package com.illusivesoulworks.charmofundying.platform;
 
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
+import com.illusivesoulworks.charmofundying.common.network.CharmOfUndyingForgeNetwork;
+import com.illusivesoulworks.charmofundying.common.network.SPacketUseTotem;
 import com.illusivesoulworks.charmofundying.platform.services.IPlatform;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
@@ -51,5 +54,12 @@ public class ForgePlatform implements IPlatform {
   @Override
   public boolean isModLoaded(String name) {
     return ModList.get().isLoaded(name);
+  }
+
+  @Override
+  public void broadcastTotemEvent(LivingEntity livingEntity) {
+    CharmOfUndyingForgeNetwork.get()
+        .send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
+            new SPacketUseTotem(livingEntity.getId()));
   }
 }

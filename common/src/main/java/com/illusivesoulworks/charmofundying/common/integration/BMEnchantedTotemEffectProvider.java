@@ -19,19 +19,23 @@
 package com.illusivesoulworks.charmofundying.common.integration;
 
 import com.illusivesoulworks.charmofundying.common.ITotemEffectProvider;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 public class BMEnchantedTotemEffectProvider implements ITotemEffectProvider {
 
   @Override
-  public void applyEffects(LivingEntity livingEntity) {
+  public boolean applyEffects(LivingEntity livingEntity, DamageSource damageSource,
+                              ItemStack stack) {
     livingEntity.setHealth(livingEntity.getMaxHealth() / 2F);
     livingEntity.removeAllEffects();
     livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 500, 1));
     livingEntity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 1200, 3));
     livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2000, 0));
     livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2000, 0));
+    return true;
   }
 }

@@ -34,7 +34,7 @@ public class MixinLivingEntity {
   @Inject(at = @At(value = "INVOKE", target = "net/minecraft/world/InteractionHand.values()[Lnet/minecraft/world/InteractionHand;"), method = "checkTotemDeathProtection", cancellable = true)
   private void charmofundying$checkTotemDeathProtection(DamageSource src,
                                                         CallbackInfoReturnable<Boolean> cir) {
-    if (CharmOfUndyingCommonMod.hasTotem((LivingEntity) (Object) this)) {
+    if (CharmOfUndyingCommonMod.useTotem(src, (LivingEntity) (Object) this)) {
       cir.setReturnValue(true);
     }
   }
