@@ -55,7 +55,7 @@ subprojects {
         }
 
         maven {
-            name = "C4's Maven"
+            name = "Illusive Soulworks"
             url = "https://maven.theillusivec4.top/"
         }
 

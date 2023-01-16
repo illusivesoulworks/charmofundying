@@ -25,11 +25,6 @@ import com.illusivesoulworks.charmofundying.platform.services.IPlatform;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketsApi;
 import java.util.List;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,8 +32,12 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.quiltmc.loader.api.QuiltLoader;
+import org.quiltmc.qsl.networking.api.PacketByteBufs;
+import org.quiltmc.qsl.networking.api.PlayerLookup;
+import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 
-public class FabricPlatform implements IPlatform {
+public class QuiltPlatform implements IPlatform {
 
   @Override
   public ItemStack findTotem(LivingEntity livingEntity) {
@@ -56,7 +55,7 @@ public class FabricPlatform implements IPlatform {
 
   @Override
   public boolean isModLoaded(String name) {
-    return FabricLoader.getInstance().isModLoaded(name);
+    return QuiltLoader.isModLoaded(name);
   }
 
   @Override

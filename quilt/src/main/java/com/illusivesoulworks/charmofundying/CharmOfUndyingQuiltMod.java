@@ -23,25 +23,26 @@ import com.illusivesoulworks.charmofundying.common.integration.FWaystonesVoidTot
 import java.util.HashSet;
 import java.util.Set;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.loader.api.QuiltLoader;
+import org.quiltmc.loader.api.minecraft.MinecraftQuiltLoader;
+import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 
-public class CharmOfUndyingFabricMod implements ModInitializer {
+public class CharmOfUndyingQuiltMod implements ModInitializer {
 
   @Override
-  public void onInitialize() {
+  public void onInitialize(ModContainer modContainer) {
     CharmOfUndyingCommonMod.init();
 
-    if (FabricLoader.getInstance().isModLoaded("fwaystones")) {
+    if (QuiltLoader.isModLoaded("fwaystones")) {
       FWaystonesVoidTotemEffectProvider.init();
     }
-    boolean isClient = FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
+    boolean isClient = MinecraftQuiltLoader.getEnvironmentType() == EnvType.CLIENT;
     Set<String> totems = new HashSet<>(TotemProviders.getItems());
 
     if (isClient) {
