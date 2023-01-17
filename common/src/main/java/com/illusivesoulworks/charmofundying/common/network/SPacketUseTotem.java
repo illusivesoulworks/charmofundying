@@ -18,13 +18,8 @@
 
 package com.illusivesoulworks.charmofundying.common.network;
 
-import com.illusivesoulworks.charmofundying.platform.Services;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.particles.ParticleTypes;
+import com.illusivesoulworks.charmofundying.client.ClientPacketHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.Entity;
 
 public record SPacketUseTotem(int id) {
 
@@ -37,21 +32,6 @@ public record SPacketUseTotem(int id) {
   }
 
   public static void handle(SPacketUseTotem msg) {
-    Minecraft mc = Minecraft.getInstance();
-    ClientLevel level = mc.level;
-
-    if (level != null) {
-      Entity entity = mc.level.getEntity(msg.id());
-
-      if (entity != null) {
-        mc.particleEngine.createTrackingEmitter(entity, ParticleTypes.TOTEM_OF_UNDYING, 30);
-        entity.level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
-            SoundEvents.TOTEM_USE, entity.getSoundSource(), 1.0F, 1.0F, false);
-
-        if (entity == mc.player) {
-          mc.gameRenderer.displayItemActivation(Services.PLATFORM.findTotem(mc.player));
-        }
-      }
-    }
+    ClientPacketHandler.handle(msg);
   }
 }
