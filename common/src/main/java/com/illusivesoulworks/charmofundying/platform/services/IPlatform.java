@@ -28,6 +28,8 @@ public interface IPlatform {
 
   String getRegistryName(Item item);
 
+  Item getItem(String name);
+
   boolean isModLoaded(String name);
 
   void broadcastTotemEvent(LivingEntity livingEntity);

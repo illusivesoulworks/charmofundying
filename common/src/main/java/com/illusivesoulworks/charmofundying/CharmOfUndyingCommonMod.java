@@ -18,13 +18,17 @@
 
 package com.illusivesoulworks.charmofundying;
 
+import com.illusivesoulworks.charmofundying.common.ITotemEffectProvider;
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.platform.Services;
+import com.mojang.datafixers.util.Pair;
+import java.util.Optional;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -34,22 +38,43 @@ public class CharmOfUndyingCommonMod {
     TotemProviders.init();
   }
 
-  public static boolean useTotem(DamageSource damageSource, LivingEntity livingEntity) {
+  public static Optional<Pair<ITotemEffectProvider, ItemStack>> getEffectProvider(
+      LivingEntity livingEntity) {
     ItemStack stack = Services.PLATFORM.findTotem(livingEntity);
+
+    if (!stack.isEmpty()) {
+      Optional<ITotemEffectProvider> totemEffectProvider =
+          TotemProviders.getEffectProvider(stack.getItem());
+
+      if (totemEffectProvider.isPresent()) {
+        return Optional.of(Pair.of(totemEffectProvider.get(), stack));
+      }
+    }
+    return Optional.empty();
+  }
+
+  public static boolean useTotem(Pair<ITotemEffectProvider, ItemStack> totem,
+                                 DamageSource damageSource, LivingEntity livingEntity) {
+    ItemStack stack = totem.getSecond();
 
     if (!stack.isEmpty()) {
       ItemStack copy = stack.copy();
       stack.shrink(1);
 
       if (livingEntity instanceof ServerPlayer player) {
-        player.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING), 1);
+        player.awardStat(Stats.ITEM_USED.get(copy.getItem()), 1);
         CriteriaTriggers.USED_TOTEM.trigger(player, copy);
-      }
-      boolean use = TotemProviders.getEffectProvider(copy.getItem())
-          .map(effectProvider -> effectProvider.applyEffects(livingEntity, damageSource, copy))
-          .orElse(false);
 
-      if (use) {
+        if (copy.getItem() == Items.TOTEM_OF_UNDYING && Services.PLATFORM.isModLoaded("evoked")) {
+          Item item = Services.PLATFORM.getItem("evoked:totem_husk");
+
+          if (item != null && item != Items.AIR) {
+            player.getInventory().add(new ItemStack(item));
+          }
+        }
+      }
+
+      if (totem.getFirst().applyEffects(livingEntity, damageSource, copy)) {
         Services.PLATFORM.broadcastTotemEvent(livingEntity);
         return true;
       }

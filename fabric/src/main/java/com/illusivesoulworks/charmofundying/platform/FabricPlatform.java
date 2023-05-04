@@ -30,7 +30,9 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,6 +53,11 @@ public class FabricPlatform implements IPlatform {
   @Override
   public String getRegistryName(Item item) {
     return Registry.ITEM.getKey(item).toString();
+  }
+
+  @Override
+  public Item getItem(String name) {
+    return Registry.ITEM.get(new ResourceLocation(name));
   }
 
   @Override

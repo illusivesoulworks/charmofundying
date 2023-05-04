@@ -49,6 +49,11 @@ public class FWaystonesVoidTotemEffectProvider implements ITotemEffectProvider {
   }
 
   @Override
+  public boolean bypassInvul() {
+    return true;
+  }
+
+  @Override
   public boolean applyEffects(LivingEntity livingEntity, DamageSource damageSource,
                               ItemStack stack) {
 

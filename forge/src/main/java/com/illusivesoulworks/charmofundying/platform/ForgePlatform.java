@@ -52,6 +52,11 @@ public class ForgePlatform implements IPlatform {
   }
 
   @Override
+  public Item getItem(String name) {
+    return ForgeRegistries.ITEMS.getValue(new ResourceLocation(name));
+  }
+
+  @Override
   public boolean isModLoaded(String name) {
     return ModList.get().isLoaded(name);
   }

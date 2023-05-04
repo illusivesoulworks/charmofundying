@@ -2,6 +2,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/illusivesoulworks/charmofundying/blob/1.19.x/CHANGELOG.md).
 
-## [6.1.1+1.19.2] - 2023.01.16
+## [6.2.0+1.19.2] - 2023.05.04
+### Added
+- Added integration with Evoked, totems used in accessory slots will now grant a Totem Husk [#21](https://github.com/illusivesoulworks/charmofundying/issues/21)
 ### Fixed
-- Fixed dedicated server crash
+- Fixed Fabric Waystone's Void Totem not working properly for void damage
