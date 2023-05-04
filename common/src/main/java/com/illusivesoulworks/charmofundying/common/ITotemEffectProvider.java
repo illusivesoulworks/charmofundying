@@ -24,5 +24,9 @@ import net.minecraft.world.item.ItemStack;
 
 public interface ITotemEffectProvider {
 
+  default boolean bypassInvul() {
+    return false;
+  }
+
   boolean applyEffects(LivingEntity livingEntity, DamageSource damageSource, ItemStack stack);
 }
