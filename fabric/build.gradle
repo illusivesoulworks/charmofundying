@@ -17,7 +17,6 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "dev.emi:trinkets:${trinkets_version}"
-    modCompileOnly "curse.maven:fabricwaystones-410902:4024931"
 
     modRuntimeOnly("com.terraformersmc:modmenu:${mod_menu_version}") {
         transitive = false

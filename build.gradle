@@ -40,6 +40,11 @@ subprojects {
         mavenCentral()
 
         maven {
+            name 'Quilt'
+            url 'https://maven.quiltmc.org/repository/release'
+        }
+
+        maven {
             name = 'Sponge / Mixin'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
         }

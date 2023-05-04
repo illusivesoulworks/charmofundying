@@ -27,6 +27,7 @@ import java.util.Set;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -89,6 +90,6 @@ public class FWaystonesVoidTotemEffectProvider implements ITotemEffectProvider {
         }
       }
     }
-    return teleported || !damageSource.isBypassInvul();
+    return teleported || !damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
   }
 }
