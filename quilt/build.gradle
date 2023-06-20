@@ -1,5 +1,5 @@
 plugins {
-    id 'org.quiltmc.loom' version '1.+'
+    id 'org.quiltmc.loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
     id 'idea'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
@@ -79,6 +79,10 @@ processResources {
 
     filesMatching("pack.mcmeta") {
         expand 'mod_name': project.mod_name
+    }
+
+    filesMatching('*.mixins.json') {
+        expand "refmap_target": "${archivesBaseName}-"
     }
 }
 
