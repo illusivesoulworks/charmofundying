@@ -54,6 +54,7 @@ public class CharmOfUndyingForgeMod {
 
   public CharmOfUndyingForgeMod() {
     CharmOfUndyingCommonMod.init();
+    CharmOfUndyingConfig.setup();
     final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);

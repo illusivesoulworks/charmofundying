@@ -17,6 +17,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "dev.emi:trinkets:${trinkets_version}"
+    modImplementation group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_range}"
     modCompileOnly "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}"
 
     modRuntimeOnly("com.terraformersmc:modmenu:${mod_menu_version}") {
@@ -26,6 +27,8 @@ dependencies {
     modCompileOnly "curse.maven:owolib-532610:4028921"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":common")
+
+    include group: 'com.illusivesoulworks.spectrelib', name: 'spectrelib-fabric', version: "${spectrelib_version}"
 }
 
 loom {

@@ -11,6 +11,9 @@
       ],
       "client_init": [
         "com.illusivesoulworks.charmofundying.client.CharmOfUndyingQuiltClientMod"
+      ],
+      "spectrelib": [
+        "com.illusivesoulworks.charmofundying.CharmOfUndyingConfigInitializer"
       ]
     },
     "depends": [
@@ -33,6 +36,10 @@
       {
         "id": "quilted_fabric_api",
         "version": "*"
+      },
+      {
+        "id": "trinkets",
+        "version": "*"
       }
     ],
     "metadata": {
@@ -40,6 +47,9 @@
       "description": "${mod_description}",
       "contributors": {
         "${mod_author}": "Owner"
+      },
+      "contact": {
+        "issues": "${issue_tracker}"
       },
       "license": "${license}",
       "icon": "${mod_id}_icon.png"

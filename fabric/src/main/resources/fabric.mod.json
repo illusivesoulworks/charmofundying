@@ -19,6 +19,9 @@
     ],
     "client": [
       "com.illusivesoulworks.charmofundying.client.CharmOfUndyingFabricClientMod"
+    ],
+    "spectrelib": [
+      "com.illusivesoulworks.charmofundying.CharmOfUndyingConfigInitializer"
     ]
   },
   "mixins": [
