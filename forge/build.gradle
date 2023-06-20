@@ -120,13 +120,18 @@ processResources {
 
 jar.finalizedBy('reobfJar')
 
+reobf {
+    jarJar {}
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            artifact jar
+            from components.java
+            jarJar.component(it, tasks.jarJar)
         }
     }
     repositories {
@@ -134,6 +139,19 @@ publishing {
             url "file://" + System.getenv("local_maven")
         }
     }
+}
+
+tasks.jarJar.configure {
+    archiveClassifier.set("")
+    from(rootProject.file("LICENSE"))
+    from(rootProject.file("COPYING"))
+    from(rootProject.file("COPYING.LESSER"))
+    from(rootProject.file("README.md"))
+    from(rootProject.file("CHANGELOG.md"))
+}
+
+jarJar {
+    enable()
 }
 
 task publishCurseForge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
@@ -162,4 +180,8 @@ modrinth {
     dependencies {
         required.project "curios"
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
