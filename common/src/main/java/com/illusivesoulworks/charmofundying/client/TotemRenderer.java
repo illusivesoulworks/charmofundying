@@ -40,6 +40,6 @@ public class TotemRenderer {
     poseStack.mulPose(Direction.DOWN.getRotation());
     Minecraft.getInstance().getItemRenderer()
         .renderStatic(stack, ItemDisplayContext.NONE, light, OverlayTexture.NO_OVERLAY,
-            poseStack, buffer, livingEntity.getLevel(), 0);
+            poseStack, buffer, livingEntity.level(), 0);
   }
 }

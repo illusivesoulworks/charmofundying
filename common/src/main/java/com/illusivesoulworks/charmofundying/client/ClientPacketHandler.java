@@ -37,7 +37,7 @@ public class ClientPacketHandler {
 
       if (entity != null) {
         mc.particleEngine.createTrackingEmitter(entity, ParticleTypes.TOTEM_OF_UNDYING, 30);
-        entity.level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
+        entity.level().playLocalSound(entity.getX(), entity.getY(), entity.getZ(),
             SoundEvents.TOTEM_USE, entity.getSoundSource(), 1.0F, 1.0F, false);
 
         if (entity == mc.player) {
