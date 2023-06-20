@@ -1,0 +1,9 @@
+{
+  "gui.charmofundying.config.xOffset.name": "Horizontal rendering offset",
+  "gui.charmofundying.config.xOffset.description": "The horizontal offset for rendering the totem on the player.",
+  "gui.charmofundying.config.yOffset.name": "Vertical rendering offset",
+  "gui.charmofundying.config.yOffset.description": "The vertical offset for rendering the totem on the player.",
+  "gui.charmofundying.config.renderTotem.name": "Render equipped totem",
+  "gui.charmofundying.config.renderTotem.description": "If enabled, renders the equipped totem on players.",
+  "trinkets.slot.charm.charm": "Charm"
+}

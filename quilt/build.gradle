@@ -85,6 +85,10 @@ processResources {
     filesMatching("pack.mcmeta") {
         expand 'mod_name': project.mod_name
     }
+
+    filesMatching('*.mixins.json') {
+        expand "refmap_target": "${archivesBaseName}-"
+    }
 }
 
 tasks.withType(JavaCompile) {

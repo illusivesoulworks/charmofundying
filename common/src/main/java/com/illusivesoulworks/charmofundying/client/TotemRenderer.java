@@ -18,6 +18,7 @@
 
 package com.illusivesoulworks.charmofundying.client;
 
+import com.illusivesoulworks.charmofundying.CharmOfUndyingConfig;
 import com.illusivesoulworks.charmofundying.platform.Services;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -34,12 +35,16 @@ public class TotemRenderer {
   public static void render(LivingEntity livingEntity, EntityModel<? extends LivingEntity> model,
                             PoseStack poseStack, ItemStack stack, MultiBufferSource buffer,
                             int light) {
-    Services.CLIENT_PLATFORM.translateToPosition(livingEntity, model, poseStack);
-    poseStack.translate(0.0F, -0.2F, 0.0F);
-    poseStack.scale(0.35F, 0.35F, 0.35F);
-    poseStack.mulPose(Direction.DOWN.getRotation());
-    Minecraft.getInstance().getItemRenderer()
-        .renderStatic(stack, ItemDisplayContext.NONE, light, OverlayTexture.NO_OVERLAY,
-            poseStack, buffer, livingEntity.level(), 0);
+
+    if (CharmOfUndyingConfig.SERVER.renderTotem.get()) {
+      Services.CLIENT_PLATFORM.translateToPosition(livingEntity, model, poseStack);
+      poseStack.translate(0.0F, -0.2F + CharmOfUndyingConfig.SERVER.yOffset.get(),
+          0.0F + CharmOfUndyingConfig.SERVER.xOffset.get());
+      poseStack.scale(0.35F, 0.35F, 0.35F);
+      poseStack.mulPose(Direction.DOWN.getRotation());
+      Minecraft.getInstance().getItemRenderer()
+          .renderStatic(stack, ItemDisplayContext.NONE, light, OverlayTexture.NO_OVERLAY,
+              poseStack, buffer, livingEntity.level(), 0);
+    }
   }
 }

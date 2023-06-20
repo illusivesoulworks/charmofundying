@@ -19,18 +19,18 @@ public class CharmOfUndyingConfig {
 
   public static class Server {
 
-    public final SpectreConfigSpec.IntValue yOffset;
-    public final SpectreConfigSpec.IntValue xOffset;
+    public final SpectreConfigSpec.DoubleValue yOffset;
+    public final SpectreConfigSpec.DoubleValue xOffset;
     public final SpectreConfigSpec.BooleanValue renderTotem;
 
     public Server(SpectreConfigSpec.Builder builder) {
       yOffset = builder.comment("The vertical offset for rendering the totem on the player.")
           .translation(CONFIG_PREFIX + "yOffset")
-          .defineInRange("yOffset", 0, -100, 100);
+          .defineInRange("yOffset", 0.0D, -100.0D, 100.0D);
 
       xOffset = builder.comment("The horizontal offset for rendering the totem on the player.")
           .translation(CONFIG_PREFIX + "xOffset")
-          .defineInRange("xOffset", 0, -100, 100);
+          .defineInRange("xOffset", 0.0D, -100.0D, 100.0D);
 
       renderTotem = builder.comment("If enabled, renders the equipped totem on players.")
           .translation(CONFIG_PREFIX + "renderTotem")

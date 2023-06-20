@@ -34,18 +34,13 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
@@ -58,7 +53,6 @@ public class CharmOfUndyingForgeMod {
     final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
-    eventBus.addListener(this::enqueue);
   }
 
   private void setup(final FMLCommonSetupEvent evt) {
@@ -75,11 +69,6 @@ public class CharmOfUndyingForgeMod {
         CuriosRendererRegistry.register(item, CurioTotemRenderer::new);
       }
     }
-  }
-
-  private void enqueue(final InterModEnqueueEvent evt) {
-    InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE,
-        () -> SlotTypePreset.CHARM.getMessageBuilder().build());
   }
 
   private void attachCapabilities(AttachCapabilitiesEvent<ItemStack> evt) {
