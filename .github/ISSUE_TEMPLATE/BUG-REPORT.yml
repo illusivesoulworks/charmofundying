@@ -47,7 +47,7 @@ body:
   attributes:
     label: Loader
     description: Are you using Fabric, Forge, or Quilt?
-      options:
+    options:
         - Fabric
         - Forge
         - Quilt
