@@ -37,6 +37,7 @@ public class TotemRenderer {
                             int light) {
 
     if (CharmOfUndyingConfig.SERVER.renderTotem.get()) {
+      poseStack.pushPose();
       Services.CLIENT_PLATFORM.translateToPosition(livingEntity, model, poseStack);
       poseStack.translate(0.0F, -0.2F + CharmOfUndyingConfig.SERVER.yOffset.get(),
           0.0F + CharmOfUndyingConfig.SERVER.xOffset.get());
@@ -45,6 +46,7 @@ public class TotemRenderer {
       Minecraft.getInstance().getItemRenderer()
           .renderStatic(stack, ItemDisplayContext.NONE, light, OverlayTexture.NO_OVERLAY,
               poseStack, buffer, livingEntity.level(), 0);
+      poseStack.popPose();
     }
   }
 }
