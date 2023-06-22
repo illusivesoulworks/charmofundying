@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 Prior to version 6.0.0, this project used MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH.
 
+## [6.2.1+1.19.2] - 2023.06.22
+### Fixed
+- Fixed totem rendering propagating to other curios [#24](https://github.com/illusivesoulworks/charmofundying/issues/24)
+
 ## [6.2.0+1.19.2] - 2023.05.04
 ### Added
 - Added integration with Evoked, totems used in accessory slots will now grant a Totem Husk [#21](https://github.com/illusivesoulworks/charmofundying/issues/21)

@@ -34,6 +34,7 @@ public class TotemRenderer {
   public static void render(LivingEntity livingEntity, EntityModel<? extends LivingEntity> model,
                             PoseStack poseStack, ItemStack stack, MultiBufferSource buffer,
                             int light) {
+    poseStack.pushPose();
     Services.CLIENT_PLATFORM.translateToPosition(livingEntity, model, poseStack);
     poseStack.translate(0.0F, -0.2F, 0.0F);
     poseStack.scale(0.35F, 0.35F, 0.35F);
@@ -41,5 +42,6 @@ public class TotemRenderer {
     Minecraft.getInstance().getItemRenderer()
         .renderStatic(stack, ItemTransforms.TransformType.NONE, light, OverlayTexture.NO_OVERLAY,
             poseStack, buffer, 0);
+    poseStack.popPose();
   }
 }
