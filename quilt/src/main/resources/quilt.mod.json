@@ -40,6 +40,10 @@
       {
         "id": "trinkets",
         "version": "*"
+      },
+      {
+        "id": "spectrelib",
+        "version": ">=0.13"
       }
     ],
     "metadata": {

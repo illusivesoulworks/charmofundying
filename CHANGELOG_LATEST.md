@@ -2,6 +2,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/illusivesoulworks/charmofundying/blob/1.20.x/CHANGELOG.md).
 
-## [6.4.2+1.20.1] - 2023.06.22
+## [6.4.3+1.20.1] - 2023.06.25
 ### Fixed
-- Fixed totem rendering propagating to other curios [#24](https://github.com/illusivesoulworks/charmofundying/issues/24)
+- [Quilt] Fixed config crashes [#27](https://github.com/illusivesoulworks/charmofundying/issues/27)
