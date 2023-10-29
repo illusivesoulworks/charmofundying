@@ -36,9 +36,9 @@ public class ForgePlatform implements IPlatform {
 
   @Override
   public ItemStack findTotem(LivingEntity livingEntity) {
-    return CuriosApi.getCuriosHelper()
-        .findFirstCurio(livingEntity, stack -> TotemProviders.IS_TOTEM.test(stack.getItem()))
-        .map(SlotResult::stack).orElse(ItemStack.EMPTY);
+    return CuriosApi.getCuriosInventory(livingEntity).map(
+        inv -> inv.findFirstCurio(stack -> TotemProviders.IS_TOTEM.test(stack.getItem()))
+            .map(SlotResult::stack).orElse(ItemStack.EMPTY)).orElse(ItemStack.EMPTY);
   }
 
   @Override
@@ -58,8 +58,7 @@ public class ForgePlatform implements IPlatform {
 
   @Override
   public void broadcastTotemEvent(LivingEntity livingEntity) {
-    CharmOfUndyingForgeNetwork.get()
-        .send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity),
-            new SPacketUseTotem(livingEntity.getId()));
+    CharmOfUndyingForgeNetwork.get().send(new SPacketUseTotem(livingEntity.getId()),
+        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(livingEntity));
   }
 }

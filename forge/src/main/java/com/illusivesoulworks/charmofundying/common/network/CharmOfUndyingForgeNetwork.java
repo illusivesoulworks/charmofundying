@@ -22,33 +22,34 @@ import com.illusivesoulworks.charmofundying.CharmOfUndyingConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.network.Channel;
+import net.minecraftforge.network.ChannelBuilder;
+import net.minecraftforge.network.SimpleChannel;
 
 public class CharmOfUndyingForgeNetwork {
 
-  private static final String PTC_VERSION = "1";
+  private static final int PTC_VERSION = 1;
 
   private static SimpleChannel instance;
-  private static int id = 0;
 
   public static SimpleChannel get() {
     return instance;
   }
 
   public static void setup() {
-    instance =
-        NetworkRegistry.ChannelBuilder.named(
-                new ResourceLocation(CharmOfUndyingConstants.MOD_ID, "main"))
-            .networkProtocolVersion(() -> PTC_VERSION).clientAcceptedVersions(PTC_VERSION::equals)
-            .serverAcceptedVersions(PTC_VERSION::equals).simpleChannel();
-    instance.registerMessage(id++, SPacketUseTotem.class, SPacketUseTotem::encode,
-        SPacketUseTotem::decode, (message, contextSupplier) -> {
-          NetworkEvent.Context context = contextSupplier.get();
+    instance = ChannelBuilder.named(new ResourceLocation(CharmOfUndyingConstants.MOD_ID, "main"))
+        .networkProtocolVersion(PTC_VERSION)
+        .clientAcceptedVersions(Channel.VersionTest.exact(PTC_VERSION))
+        .serverAcceptedVersions(Channel.VersionTest.exact(PTC_VERSION)).simpleChannel();
+
+    instance.messageBuilder(SPacketUseTotem.class)
+        .encoder(SPacketUseTotem::encode)
+        .decoder(SPacketUseTotem::decode)
+        .consumerNetworkThread((message, context) -> {
           context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
               () -> () -> SPacketUseTotem.handle(message)));
           context.setPacketHandled(true);
-        });
+        })
+        .add();
   }
 }
