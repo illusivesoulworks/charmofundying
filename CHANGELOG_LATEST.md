@@ -2,7 +2,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 This is a copy of the changelog for the most recent version. For the full version history, go [here](https://github.com/illusivesoulworks/charmofundying/blob/1.20.x/CHANGELOG.md).
 
-## [6.4.4+1.20.1] - 2023.10.23
-### Changed
-- Updated to SpectreLib 0.13.14
-- [Fabric] Requires Fabric Loader >=0.14.23
+## [6.4.5+1.20.1] - 2023.10.29
+### Added
+- Added `ru_ru` localization (thanks mpustovoi!) [#31](https://github.com/illusivesoulworks/charmofundying/pull/31)
