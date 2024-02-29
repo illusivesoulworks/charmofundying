@@ -91,7 +91,7 @@ public class CharmOfUndyingNeoForgeMod {
           public boolean canEquipFromUse(SlotContext ctx) {
             return true;
           }
-        });
+        }, item);
       }
     }
   }
