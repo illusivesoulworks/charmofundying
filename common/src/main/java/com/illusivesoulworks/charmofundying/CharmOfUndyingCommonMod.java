@@ -54,17 +54,18 @@ public class CharmOfUndyingCommonMod {
   public static boolean useTotem(Pair<ITotemEffectProvider, ItemStack> totem,
                                  DamageSource damageSource, LivingEntity livingEntity) {
     ItemStack stack = totem.getSecond();
+    ITotemEffectProvider effectProvider = totem.getFirst();
 
     if (!stack.isEmpty()) {
       ItemStack copy = stack.copy();
-      stack.shrink(1);
+      effectProvider.modifyStack(stack);
 
       if (livingEntity instanceof ServerPlayer player) {
         player.awardStat(Stats.ITEM_USED.get(copy.getItem()), 1);
         CriteriaTriggers.USED_TOTEM.trigger(player, copy);
       }
 
-      if (totem.getFirst().applyEffects(livingEntity, damageSource, copy)) {
+      if (effectProvider.applyEffects(livingEntity, damageSource, copy)) {
         Services.PLATFORM.broadcastTotemEvent(livingEntity);
         return true;
       }

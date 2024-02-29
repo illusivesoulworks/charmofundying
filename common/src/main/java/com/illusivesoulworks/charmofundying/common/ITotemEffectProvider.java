@@ -29,4 +29,8 @@ public interface ITotemEffectProvider {
   }
 
   boolean applyEffects(LivingEntity livingEntity, DamageSource damageSource, ItemStack stack);
+
+  default void modifyStack(ItemStack stack) {
+    stack.shrink(1);
+  }
 }
