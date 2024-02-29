@@ -21,6 +21,8 @@ package com.illusivesoulworks.charmofundying;
 import com.illusivesoulworks.charmofundying.client.CurioTotemRenderer;
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
 import com.illusivesoulworks.charmofundying.common.network.CharmOfUndyingForgeNetwork;
+import java.util.HashSet;
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.minecraft.core.Direction;
@@ -34,6 +36,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -61,8 +64,14 @@ public class CharmOfUndyingForgeMod {
   }
 
   private void clientSetup(final FMLClientSetupEvent evt) {
+    Set<String> items = new HashSet<>(TotemProviders.getItems());
 
-    for (String name : TotemProviders.getItems()) {
+    if (ModList.get().isLoaded("friendsandfoes")) {
+      items.add("friendsandfoes:totem_of_freezing");
+      items.add("friendsandfoes:totem_of_illusion");
+    }
+
+    for (String name : items) {
       Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(name));
 
       if (item != null && item != Items.AIR) {
