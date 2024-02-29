@@ -59,6 +59,8 @@ public class CharmOfUndyingFabricMod implements ModInitializer {
     }
     boolean isClient = FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
     Set<String> totems = new HashSet<>(TotemProviders.getItems());
+    totems.add("friendsandfoes:totem_of_freezing");
+    totems.add("friendsandfoes:totem_of_illusion");
 
     if (isClient) {
       Set<String> remove = new HashSet<>();
