@@ -19,6 +19,7 @@
 package com.illusivesoulworks.charmofundying;
 
 import com.illusivesoulworks.charmofundying.common.TotemProviders;
+import com.illusivesoulworks.charmofundying.common.VanillaTotemEffectProvider;
 import com.illusivesoulworks.charmofundying.common.integration.FWaystonesVoidTotemEffectProvider;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,10 +27,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public class CharmOfUndyingFabricMod implements ModInitializer {
@@ -40,6 +41,21 @@ public class CharmOfUndyingFabricMod implements ModInitializer {
 
     if (FabricLoader.getInstance().isModLoaded("fwaystones")) {
       FWaystonesVoidTotemEffectProvider.init();
+    }
+
+    if (FabricLoader.getInstance().isModLoaded("netheriteextras")) {
+      TotemProviders.putEffectProvider("netheriteextras:totem_of_neverdying",
+          new VanillaTotemEffectProvider() {
+
+            @Override
+            public void modifyStack(ItemStack stack) {
+              stack.setDamageValue(stack.getDamageValue() + 1);
+
+              if (stack.getDamageValue() >= stack.getMaxDamage()) {
+                stack.shrink(1);
+              }
+            }
+          });
     }
     boolean isClient = FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
     Set<String> totems = new HashSet<>(TotemProviders.getItems());

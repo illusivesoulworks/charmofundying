@@ -9,6 +9,21 @@ plugins {
 base {
     archivesName = "${mod_id}-fabric"
 }
+
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings(loom.layered {
@@ -24,6 +39,7 @@ dependencies {
     modRuntimeOnly("com.terraformersmc:modmenu:${mod_menu_version}") {
         transitive = false
     }
+    modCompileOnly "maven.modrinth:netherite-extras:0.2.2+mc1.20.1"
     modCompileOnly "curse.maven:fabricwaystones-410902:4024931"
     modCompileOnly "curse.maven:owolib-532610:4028921"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
