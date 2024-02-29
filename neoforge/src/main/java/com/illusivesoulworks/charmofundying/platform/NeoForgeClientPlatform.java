@@ -16,32 +16,21 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.illusivesoulworks.charmofundying.common.network;
+package com.illusivesoulworks.charmofundying.platform;
 
-import com.illusivesoulworks.charmofundying.client.ClientPacketHandler;
-import net.minecraft.network.FriendlyByteBuf;
+import com.illusivesoulworks.charmofundying.platform.services.IClientPlatform;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.world.entity.LivingEntity;
+import top.theillusivec4.curios.api.client.ICurioRenderer;
 
-public class SPacketUseTotem {
+public class NeoForgeClientPlatform implements IClientPlatform {
 
-  private final int entityId;
-
-  public SPacketUseTotem(int entityId) {
-    this.entityId = entityId;
-  }
-
-  public int entityId() {
-    return this.entityId;
-  }
-
-  public static void encode(SPacketUseTotem packet, FriendlyByteBuf buffer) {
-    buffer.writeInt(packet.entityId());
-  }
-
-  public static SPacketUseTotem decode(FriendlyByteBuf buffer) {
-    return new SPacketUseTotem(buffer.readInt());
-  }
-
-  public static void handle(SPacketUseTotem msg) {
-    ClientPacketHandler.handle(msg);
+  @Override
+  public void translateToPosition(LivingEntity livingEntity,
+                                  EntityModel<? extends LivingEntity> model, PoseStack poseStack) {
+    ICurioRenderer.translateIfSneaking(poseStack, livingEntity);
+    ICurioRenderer.rotateIfSneaking(poseStack, livingEntity);
+    poseStack.translate(0.0F, 0.4F, -0.15F);
   }
 }

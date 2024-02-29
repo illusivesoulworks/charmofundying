@@ -33,7 +33,7 @@ public class ClientPacketHandler {
     ClientLevel level = mc.level;
 
     if (level != null) {
-      Entity entity = mc.level.getEntity(msg.id());
+      Entity entity = mc.level.getEntity(msg.entityId());
 
       if (entity != null) {
         mc.particleEngine.createTrackingEmitter(entity, ParticleTypes.TOTEM_OF_UNDYING, 30);
