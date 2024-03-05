@@ -9,6 +9,10 @@
     {
       "id": "fwaystones:void_totem",
       "required": false
+    },
+    {
+      "id": "netheriteextras:totem_of_neverdying",
+      "required": false
     }
   ]
 }
